@@ -3,10 +3,15 @@ import os
 import shutil
 from PIL import Image
 import imagehash
+from image_scooper import scoop_image
+from time import time
 
-hash_of_image_to_replace = imagehash.average_hash(Image.open('image_to_replace.jpeg')) 
+# get the image to replace ready
+path_of_image_to_replace = 'image_to_replace.jpeg'
+hash_of_image_to_replace = imagehash.average_hash(Image.open(path_of_image_to_replace)) 
 
-bytes_of_image_to_replace_with = open('image_to_replace_with.jpeg', 'rb').read()
+# get the replacement ready
+carl = Image.open('carl.jpeg')
 
 def similar_images(path):
     print('path:', path)
@@ -20,37 +25,35 @@ def similar_images(path):
         return False
 
 from image_scooper import scoop_image
-# url = 'https://www.zales.com/ladies-25mm-wedding-band-14k-gold/p/V-20036320?cid=PLA-goo-E-Commerce+-+PLA+-+P2+-+Bridal+-+Rings&ds_rl=1252053&ds_rl=1252056&gclid=Cj0KCQiAyracBhDoARIsACGFcS4EPGgTWJsPHmfH6ExMNXOC61_0CvQgS7-vfqWms5TgQ3vR4P5nblYaAp6wEALw_wcB&gclsrc=aw.ds'
-# url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-gold/p/V-141065401'
-url = 'https://www.jared.com/le-vian-natural-emerald-ring-78-ct-tw-diamonds-14k-honey-gold/p/V-135389207'
+some_14k_ring_url = 'https://www.zales.com/ladies-25mm-wedding-band-14k-gold/p/V-20036320?cid=PLA-goo-E-Commerce+-+PLA+-+P2+-+Bridal+-+Rings&ds_rl=1252053&ds_rl=1252056&gclid=Cj0KCQiAyracBhDoARIsACGFcS4EPGgTWJsPHmfH6ExMNXOC61_0CvQgS7-vfqWms5TgQ3vR4P5nblYaAp6wEALw_wcB&gclsrc=aw.ds'
+vera_wang_url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-gold/p/V-141065401'
 # example_image_bytes = scoop_image(url)
 
 
-def replace_image(input_docx, output_docx):
-    # this takes the bytes of the image to replace and the bytes of the image to replace it with,
-    # the name of the docx file to replace the image in, and the name of the output docx file
-
+def replace_image(input_docx, output_docx, image_to_replace_with):
+    # this takes the name of the docx file to replace the image in, the name of the output docx file
+    # and the Image object of the image to replace it with
     archive = zipfile.ZipFile(f'{input_docx}.docx')
     for file in archive.filelist:
         # if file.filename.startswith('word/media/') and file.file_size > 30:
         archive.extract(file, 'extracted_docx')
-
+    image_count = 0
     found_similar_image = False
     for file in os.listdir('extracted_docx\\word\\media'):
         if file.endswith('.png') or file.endswith(".jpg") or file.endswith(".jpeg"):
+            image_count += 1
             if similar_images(f"extracted_docx\\word\\media\\{file}"):
                 image_to_replace = file
                 print("Found it!!!")
                 found_similar_image = True
                 break
+    print(f"image_count: {image_count}")
     if found_similar_image:
         print("image_to_replace:", image_to_replace)
     else:
         print("image not found")
         return False
-
-    with open(f"extracted_docx\\word\\media\\{image_to_replace}", 'wb') as f: # TODO: replace path with path of image to replace
-        f.write(bytes_of_image_to_replace_with)
+    image_to_replace_with.save(f"extracted_docx\\word\\media\\{image_to_replace}", "JPEG")
 
     shutil.make_archive(f'{output_docx}', 'zip', 'extracted_docx')
 
@@ -61,5 +64,13 @@ def replace_image(input_docx, output_docx):
     return True
 
 if __name__ == "__main__":
-    replace_image('test', 'test2')
+    start = time()
+    # put carl on there
+    replace_image('test', 'test2', carl)
+    # test it with a scooped image (vera wang)
+    replace_image('test', 'test3', scoop_image(vera_wang_url))
+    # test it with a scooped image (some 14k ring)
+    replace_image('test', 'test4', scoop_image(some_14k_ring_url))
+    end = time()
+    print(f"Time taken: {end - start}")
     print("done")

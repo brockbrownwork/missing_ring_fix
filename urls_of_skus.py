@@ -5,17 +5,19 @@ from time import sleep, time
 
 stores = ['zales', 'zalesoutlet', 'jared', 'kay', 'peoplesjewellers']
 
-def search_sku(store_name, sku):
-    r = requests.get(f"http://www.{store}.com/search?text={sku}")
+def search_sku(store_name, sku, results):
+    r = requests.get(f"http://www.{store_name}.com/search?text={sku}")
     if not "search" in r.url:
-        webbrowser.open(r.url)
+        # webbrowser.open(r.url)
+        results.append(r.url)
 
 def search_skus(sku_list):
     start = time()
+    results = []
     for sku in sku_list:
         threads = []
         for store in stores:
-            thread = threading.Thread(target = search_sku, args = (store, sku))
+            thread = threading.Thread(target = search_sku, args = (store, sku, results))
             threads.append(thread)
             thread.start()
         count = 0
@@ -28,6 +30,12 @@ def search_skus(sku_list):
     print("Done!")
     end = time()
     print(f"Time taken: {end - start} seconds.")
+    return results
     # google = input("Would you like to run a google query of the SKU? (y/n) > ")
     # if google.lower() == "y":
     #     webbrowser.open(f'https://www.google.com/search?q="{sku}"')
+
+# test it out
+
+if __name__ == "__main__":
+    pass

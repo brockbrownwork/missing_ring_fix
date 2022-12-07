@@ -10,8 +10,12 @@ from PIL import Image
 url = 'https://www.zales.com/ladies-25mm-wedding-band-14k-gold/p/V-20036320?cid=PLA-goo-E-Commerce+-+PLA+-+P2+-+Bridal+-+Rings&ds_rl=1252053&ds_rl=1252056&gclid=Cj0KCQiAyracBhDoARIsACGFcS4EPGgTWJsPHmfH6ExMNXOC61_0CvQgS7-vfqWms5TgQ3vR4P5nblYaAp6wEALw_wcB&gclsrc=aw.ds'
 url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-gold/p/V-141065401'
 # url = 'https://www.jared.com/le-vian-natural-emerald-ring-78-ct-tw-diamonds-14k-honey-gold/p/V-135389207'
+url = 'https://www.kay.com/labcreated-diamonds-by-kay-anniversary-band-115-ct-tw-10k-yellow-gold/p/V-182819007'
 
-def scoop_image(url):
+
+
+def scoop_image(url:str, verbose:bool = False) -> Image:
+    # scoops the image up from the given url
     # use a regular expression to grab just the home page url
     home_page = re.search('https?://[^/]+', url).group(0)
     print('homepage url:', home_page)

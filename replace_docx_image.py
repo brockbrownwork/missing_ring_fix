@@ -46,6 +46,9 @@ def replace_image(input_docx, output_docx, image_to_replace_with) -> bool:
     for file in os.listdir('extracted_docx\\word\\media'):
         if file.endswith('.png') or file.endswith(".jpg") or file.endswith(".jpeg"):
             image_count += 1
+            if image_count > 1:
+                print("More than one image found, exiting")
+                return False
             if similar_images(f"extracted_docx\\word\\media\\{file}"):
                 image_to_replace = file
                 print("Found it!!!")

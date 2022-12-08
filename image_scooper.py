@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 import re
 import webbrowser
 from PIL import Image
+import os
 
 # Given a url, this script will find the relevant ring image, download it, and return the bytes of the image
 
@@ -13,8 +14,27 @@ url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-go
 url = 'https://www.kay.com/labcreated-diamonds-by-kay-anniversary-band-115-ct-tw-10k-yellow-gold/p/V-182819007'
 
 
-
-def scoop_image(url:str, verbose:bool = False) -> Image:
+def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
+    '''
+    Given a url, this script will find the relevant ring image, download it, and return an Image object
+    If the search is unsuccessful, it will return None
+    If a sku is given, search for a relevant picture in folder 'sku_images'
+    '''
+    if not url and not sku:
+        print("Error: no url or sku given")
+        return None
+    if sku:
+        # search for a relevant picture in folder 'sku_images'
+        # if there's no sku_images folder, create one
+        if not os.path.exists('sku_images'):
+            os.mkdir('sku_images')
+        for file in os.listdir('sku_images'):
+            if sku == file.split('.')[0]:
+                print(f"Found image for {sku} in folder 'sku_images'")
+                return Image.open(f'sku_images/{file}')
+    if not url:
+        print("Error: no url given")
+        return None
     # scoops the image up from the given url
     # use a regular expression to grab just the home page url
     home_page = re.search('https?://[^/]+', url).group(0)
@@ -29,7 +49,7 @@ def scoop_image(url:str, verbose:bool = False) -> Image:
             ring_image = image
             break
     print(ring_image)
-    ring_image_url = bs(str(ring_image))
+    ring_image_url = bs(str(ring_image), features="lxml")
     ring_image_url = home_page + str(ring_image_url.findAll('img')[0]['src'])
     webbrowser.open(ring_image_url)
 
@@ -44,10 +64,12 @@ def scoop_image(url:str, verbose:bool = False) -> Image:
     with open(f"ring_image{file_extension}", 'wb') as f:
         f.write(ring_image)
     ring_image = Image.open(f"ring_image{file_extension}")
-    ring_image.save(f"ring_image{file_extension}")
+    # if there's a sku provided, save the image in the sku_images folder
+    if sku:
+        ring_image.save(f"sku_images\\{sku}{file_extension}")
     print("finished scooping!")
     return ring_image
 
 # test it out
 if __name__ == '__main__':
-    scoop_image(url)
+    scoop_image(url = url, sku = 'test123')

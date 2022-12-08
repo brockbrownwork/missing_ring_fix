@@ -116,3 +116,5 @@ if __name__ == "__main__":
         if file.endswith('.docx'):
             if not os.path.exists(f'output_docx\\{file[:-5]}.docx'):
                 shutil.copyfile(f'input_docx\\{file}', f'output_docx\\{file}')
+    # open up the output_docx folder
+    os.startfile('output_docx')

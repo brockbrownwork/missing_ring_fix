@@ -38,4 +38,5 @@ def search_skus(sku_list):
 # test it out
 
 if __name__ == "__main__":
-    pass
+    test_sku = ['1234']
+    print(f"results for {test_sku}:", search_skus(test_sku))

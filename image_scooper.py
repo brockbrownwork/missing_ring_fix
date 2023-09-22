@@ -12,8 +12,7 @@ url = 'https://www.zales.com/ladies-25mm-wedding-band-14k-gold/p/V-20036320?cid=
 url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-gold/p/V-141065401'
 # url = 'https://www.jared.com/le-vian-natural-emerald-ring-78-ct-tw-diamonds-14k-honey-gold/p/V-135389207'
 url = 'https://www.kay.com/labcreated-diamonds-by-kay-anniversary-band-115-ct-tw-10k-yellow-gold/p/V-182819007'
-
-
+url = 'https://www.zalesoutlet.com/oval-emerald-white-labcreated-sapphire-frame-ring-10k-gold/p/V-20509163'
 def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
     '''
     Given a url, this script will find the relevant ring image, download it, and return an Image object
@@ -33,6 +32,7 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
                 print(f"Found image for {sku} in folder 'sku_images'")
                 return Image.open(f'sku_images/{file}')
     if not url:
+        # TODO: change this so that it retrieves the url instead of giving up
         print("Error: no url given")
         return None
     # scoops the image up from the given url
@@ -43,8 +43,9 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
     page = requests.get(url).text
     page = bs(page, 'html.parser')
     images = page.find_all('img')
-    for image in images:
-        if 'class="product-gallery-image"' in str(image):
+    for i, image in enumerate(images):
+        print(str(i + 1) + " " + str(image))
+        if 'class="product-gallery-image' in str(image):
             # print(image, str(image))
             ring_image = image
             break

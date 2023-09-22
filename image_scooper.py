@@ -50,7 +50,7 @@ def scoop_image(url:str = '', sku:str = '',
     page = bs(page, 'html.parser')
     images = page.find_all('img')
     for i, image in enumerate(images):
-        print(str(i + 1) + " " + str(image))
+        # print(str(i + 1) + " " + str(image))
         if 'class="product-gallery-image' in str(image):
             # print(image, str(image))
             ring_image = image

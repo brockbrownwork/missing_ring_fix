@@ -2,3 +2,4 @@ Pillow
 beautifulsoup4
 docx2txt
 requests
+lxml

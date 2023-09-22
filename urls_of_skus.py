@@ -11,10 +11,10 @@ def search_store_for_sku(store_name, sku, results):
     This is a helper function for search_sku, it helps facilitate
     threading :)
     '''
-    r = requests.get(f"http://www.{store_name}.com/search?text={sku}")
+    r = requests.get(f"https://www.{store_name}.com/search?text={sku}")
     # if the request was unsuccessful, give up
     if r.status_code != 200:
-        print(f"Request for http://www.{store_name}.com/search?text={sku} was unsuccessful.")
+        print(f"Request for https://www.{store_name}.com/search?text={sku} was unsuccessful.")
         return
     # if the request is a product page and not a search result, add the url to the list of results
     if not "search" in r.url:

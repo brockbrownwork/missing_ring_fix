@@ -82,9 +82,12 @@ def scoop_image(url:str = '', sku:str = '',
 if __name__ == '__main__':
     # scoop_image(url = url, sku = 'test123')
     print("Testing image scooper...")
-    test_skus = ['20509163',
-             '20344860',
-             '20283669'
-             ]
+##    test_skus = ['20509163',
+##             '20344860',
+##             '20283669',
+##             '141365510'
+##             ]
+    with open("sku_list.txt", "r") as f:
+        test_skus = f.read().split('\n')
     for test_sku in test_skus:
         scoop_image(sku = test_sku)

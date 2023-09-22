@@ -90,4 +90,7 @@ if __name__ == '__main__':
     with open("sku_list.txt", "r") as f:
         test_skus = f.read().split('\n')
     for test_sku in test_skus:
-        scoop_image(sku = test_sku)
+        try:
+            scoop_image(sku = test_sku)
+        except Exception as e:
+            print(f"Had some trouble with {test_sku}: {e}")

@@ -5,6 +5,7 @@ import re
 import webbrowser
 from PIL import Image
 import os
+from urls_of_skus import search_sku
 
 # Given a url, this script will find the relevant ring image, download it, and return the bytes of the image
 
@@ -31,10 +32,15 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
             if sku == file.split('.')[0]:
                 print(f"Found image for {sku} in folder 'sku_images'")
                 return Image.open(f'sku_images/{file}')
-    if not url:
+    if sku and not url:
         # TODO: change this so that it retrieves the url instead of giving up
-        print("Error: no url given")
-        return None
+        urls = search_sku(sku)
+        if len(urls) == 0:
+            print("Error: no url given or found")
+            return None
+        print("Result of SKU url search:\n", "\n".join(urls))
+        # just use the first url found if multiple are found
+        url = urls[0]
     # scoops the image up from the given url
     # use a regular expression to grab just the home page url
     home_page = re.search('https?://[^/]+', url).group(0)
@@ -73,4 +79,6 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
 
 # test it out
 if __name__ == '__main__':
-    scoop_image(url = url, sku = 'test123')
+    # scoop_image(url = url, sku = 'test123')
+    test_sku = "20509163"
+    scoop_image(sku = test_sku)

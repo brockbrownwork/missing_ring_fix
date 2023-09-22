@@ -34,7 +34,6 @@ def scoop_image(url:str = '', sku:str = '',
                 print(f"Found image for {sku} in folder 'sku_images'")
                 return Image.open(f'sku_images/{file}')
     if sku and not url:
-        # TODO: change this so that it retrieves the url instead of giving up
         urls = search_sku(sku)
         if len(urls) == 0:
             print("Error: no url given or found")

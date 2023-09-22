@@ -14,7 +14,8 @@ url = 'https://www.jared.com/vera-wang-wish-diamond-band-2-carat-tw-14k-white-go
 # url = 'https://www.jared.com/le-vian-natural-emerald-ring-78-ct-tw-diamonds-14k-honey-gold/p/V-135389207'
 url = 'https://www.kay.com/labcreated-diamonds-by-kay-anniversary-band-115-ct-tw-10k-yellow-gold/p/V-182819007'
 url = 'https://www.zalesoutlet.com/oval-emerald-white-labcreated-sapphire-frame-ring-10k-gold/p/V-20509163'
-def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
+def scoop_image(url:str = '', sku:str = '',
+                verbose:bool = False, testing:bool = False):
     '''
     Given a url, this script will find the relevant ring image, download it, and return an Image object
     If the search is unsuccessful, it will return None
@@ -58,7 +59,8 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
     print(ring_image)
     ring_image_url = bs(str(ring_image), features="lxml")
     ring_image_url = home_page + str(ring_image_url.findAll('img')[0]['src'])
-    webbrowser.open(ring_image_url)
+    if testing:
+        webbrowser.open(ring_image_url)
 
     print('ring_image_url:', ring_image_url)
     if '.jpg' in ring_image_url:
@@ -80,5 +82,10 @@ def scoop_image(url:str = '', sku:str = '', verbose:bool = False):
 # test it out
 if __name__ == '__main__':
     # scoop_image(url = url, sku = 'test123')
-    test_sku = "20509163"
-    scoop_image(sku = test_sku)
+    print("Testing image scooper...")
+    test_skus = ['20509163',
+             '20344860',
+             '20283669'
+             ]
+    for test_sku in test_skus:
+        scoop_image(sku = test_sku)

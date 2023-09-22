@@ -47,6 +47,10 @@ def search_sku(sku):
 
 if __name__ == "__main__":
     print("Testing...")
-    test_sku = '20509163'
+    test_skus = ['20509163',
+                 '20344860',
+                 '20283669'
+                 ]
     # test_sku = '1234'
-    print(f"results for {test_sku}:", search_sku(test_sku))
+    for test_sku in test_skus:
+        print(f"results for {test_sku}:", search_sku(test_sku))

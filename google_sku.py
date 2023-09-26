@@ -20,8 +20,10 @@ def google_sku(sku):
         if url.split("-")[-1] == sku:
             print(f"Found {sku} at {url}!")
             return url
+    print(f"Couldn't find a url for {sku} on DuckDuckGo.")
+    return None
 
-valid_domains = ["zales", "kay", "jared"]
+valid_domains = ["zales", "kay", "jared", "zalesoutlet", "kayoutlet", "https://www.peoplesjewellers.com/"]
 
 if __name__ == "__main__":
     print("Hello, test...")

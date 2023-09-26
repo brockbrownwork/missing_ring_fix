@@ -95,7 +95,7 @@ if __name__ == '__main__':
 ##             '141365510'
 ##             ]
     # get the skus from active_containers_without_image.csv
-    with open("active_containers_without_image.csv") as f:
+    with open("active_parts_2.csv") as f:
         test_skus = f.read().split()
     test_skus = [sku.lstrip('0') for sku in test_skus][1:]
     print(test_skus)

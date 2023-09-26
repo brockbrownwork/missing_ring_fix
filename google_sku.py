@@ -27,7 +27,7 @@ def google_sku(sku):
         print("Got an error from google_sku, are you being rate limited?", e)
         return None
 
-valid_domains = ["zales", "kay", "jared", "zalesoutlet", "kayoutlet", "https://www.peoplesjewellers.com/"]
+valid_domains = ["zales", "kay", "jared", "zalesoutlet", "kayoutlet", "peoplesjewellers"]
 
 if __name__ == "__main__":
     print("Hello, test...")

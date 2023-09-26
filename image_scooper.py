@@ -87,10 +87,16 @@ if __name__ == '__main__':
 ##             '20283669',
 ##             '141365510'
 ##             ]
-    with open("sku_list.txt", "r") as f:
-        test_skus = f.read().split('\n')
+    # get the skus from active_containers_without_image.csv
+    with open("active_containers_without_image.csv") as f:
+        test_skus = f.read().split()
+    test_skus = [sku.lstrip('0') for sku in test_skus][1:]
+    print(test_skus)
+##    with open("sku_list.txt", "r") as f:
+##        test_skus = f.read().split('\n')
     for test_sku in test_skus:
         try:
             scoop_image(sku = test_sku)
         except Exception as e:
             print(f"Had some trouble with {test_sku}: {e}")
+    print("...Done!")

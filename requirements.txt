@@ -3,3 +3,4 @@ beautifulsoup4
 docx2txt
 requests
 lxml
+googlesearch-python
